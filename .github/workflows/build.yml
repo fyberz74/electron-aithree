@@ -5,7 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch: # bisa jalan manual dari GitHub UI
-
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 jobs:
   build:
     runs-on: windows-latest
