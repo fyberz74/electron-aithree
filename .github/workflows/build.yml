@@ -18,19 +18,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: "npm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build Electron app
-        run: pnpm dist:win
+        run: npm run dist:win
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: electron-windows-build
-          path: dist/*
+          path:
