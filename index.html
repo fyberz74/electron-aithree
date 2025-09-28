@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Loading...</h3>
+    <!-- <script type="module" src="./renderer.js"></script> -->
+     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getRemoteConfig, fetchAndActivate, getValue, getAll } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-remote-config.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfCqyGDy5aaM7OvxK0TD3NK_mNvEr_fak",
+            authDomain: "kiosk-ai-892b1.firebaseapp.com",
+            projectId: "kiosk-ai-892b1",
+            storageBucket: "kiosk-ai-892b1.firebasestorage.app",
+            messagingSenderId: "972688921439",
+            appId: "1:972688921439:web:44eb913d555deaa1e95cea",
+            measurementId: "G-5358FSZ21B"
+        };
+        const app = initializeApp(firebaseConfig);
+        const remoteConfig = getRemoteConfig(app);
+
+        remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
+
+        // fetchAndActivate(remoteConfig)
+        //     .then((data) => {
+        //     console.log("Remote Config activated", remoteConfig, data);
+        //     // console.log("Welcome text:", remoteConfig.getValue("base_url").asString());
+        //     const config = remoteConfig.getAll();
+        //     console.log(config);
+        //     const value = getValue(remoteConfig, "welcome_message");
+        //     console.log("Welcome text:", getValue(remoteConfig, "welcome_message"));
+        //     })
+        //     .catch(err => console.error("Remote Config error:", err));
+         fetchAndActivate(remoteConfig)
+            .then(() => {
+                console.log("Remote Config activated");
+
+                const message = getValue(remoteConfig, "welcome_message").asString();
+                console.log("welcome_message:", message);
+
+                 const url = getValue(remoteConfig, "welcome_message").asString();
+                    const baseurl = (url || "https://avasphere-ai.kejaksaanri.id/");
+                    window.electronAPI.setBaseUrl(baseurl);
+
+                
+            })
+            .catch(err => console.error("Remote Config error:", err));
+    </script>
+
+  </body>
+</html>

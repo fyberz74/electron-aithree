@@ -1,0 +1,65 @@
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const fs = require('fs');
+const { initializeApp } = require('firebase/app');
+const { getRemoteConfig, fetchAndActivate } = require('firebase/remote-config');
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBfCqyGDy5aaM7OvxK0TD3NK_mNvEr_fak",
+  authDomain: "kiosk-ai-892b1.firebaseapp.com",
+  projectId: "kiosk-ai-892b1",
+  storageBucket: "kiosk-ai-892b1.firebasestorage.app",
+  messagingSenderId: "972688921439",
+  appId: "1:972688921439:web:44eb913d555deaa1e95cea",
+  measurementId: "G-5358FSZ21B"
+};
+
+
+// function getConfig() {
+//   const configPath = path.join(app.getPath('userData'), 'config.json');
+
+//   // default config if not exists
+//   if (!fs.existsSync(configPath)) {
+//     const defaultConfig = { baseUrl: "https://avasphere-ai.kejaksaanri.id/" };
+//     fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
+//     return defaultConfig;
+//   }
+
+//   // read existing config
+//   return JSON.parse(fs.readFileSync(configPath));
+// }
+
+async function getBaseUrl() {
+  const firebaseApp = initializeApp(firebaseConfig);
+  const remoteConfig = getRemoteConfig(firebaseApp);
+
+  // adjust fetch frequency (e.g. 1 minute for testing)
+  remoteConfig.settings.minimumFetchIntervalMillis = 60000;
+
+  try {
+    await fetchAndActivate(remoteConfig);
+    const url = remoteConfig.getValue("base_url").asString();
+    console.log("got url", url);
+    return url || "https://avasphere-ai.kejaksaanri.id/";
+  } catch (err) {
+    console.log("Remote Config error:", err);
+    return "https://avasphere-ai.kejaksaanri.id/";
+  }
+}
+
+async function createWindow() {
+  const baseUrl = await getBaseUrl();
+
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: false
+    }
+  });
+
+  console.log("👉 Loading URL:", baseUrl);
+  mainWindow.loadURL(baseUrl);
+}
+
+app.whenReady().then(createWindow);
