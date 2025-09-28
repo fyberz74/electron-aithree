@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "build": {
-    "icon": "build/icon.ico",
+    "icon": "build/logo2.ico",
     "compression": "maximum",
     "asar": true,
     "appId": "com.faisal.electronaithree",
@@ -21,7 +21,7 @@
         "nsis",
         "msi"
       ],
-      "icon": "build/logo.ico"
+      "icon": "build/logo2.ico"
     }
   },
   "scripts": {
