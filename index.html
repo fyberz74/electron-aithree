@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
   <body>
     <h3>Loading...</h3>
     <!-- <script type="module" src="./renderer.js"></script> -->
@@ -20,29 +23,12 @@
         const remoteConfig = getRemoteConfig(app);
 
         remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
-
-        // fetchAndActivate(remoteConfig)
-        //     .then((data) => {
-        //     console.log("Remote Config activated", remoteConfig, data);
-        //     // console.log("Welcome text:", remoteConfig.getValue("base_url").asString());
-        //     const config = remoteConfig.getAll();
-        //     console.log(config);
-        //     const value = getValue(remoteConfig, "welcome_message");
-        //     console.log("Welcome text:", getValue(remoteConfig, "welcome_message"));
-        //     })
-        //     .catch(err => console.error("Remote Config error:", err));
          fetchAndActivate(remoteConfig)
             .then(() => {
                 console.log("Remote Config activated");
-
-                const message = getValue(remoteConfig, "welcome_message").asString();
-                console.log("welcome_message:", message);
-
-                 const url = getValue(remoteConfig, "welcome_message").asString();
-                    const baseurl = (url || "https://avasphere-ai.kejaksaanri.id/");
-                    window.electronAPI.setBaseUrl(baseurl);
-
-                
+                const url = getValue(remoteConfig, "base_url").asString();
+                const baseurl = (url || "https://avasphere-ai.kejaksaanri.id/");
+                window.electronAPI.setBaseUrl(baseurl);
             })
             .catch(err => console.error("Remote Config error:", err));
     </script>
