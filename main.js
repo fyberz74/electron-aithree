@@ -17,9 +17,10 @@ function createWindow() {
 
   const ses = session.defaultSession;
   ses.setPermissionRequestHandler((webContents, permission, callback, details) => {
-    console.log("Permission requested:", permission, "from", details);
+    console.log("Permission requested:", permission, "from", details.requestingOrigin);
 
     // Allow both camera & microphone access
+    if (["media", "microphone", "camera"].includes(permission)) {
       callback(true);
     } else {
       callback(false);
