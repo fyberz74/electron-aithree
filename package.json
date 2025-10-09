@@ -1,5 +1,5 @@
 {
-  "name": "backoffice-kiosk",
+  "name": "kiosk",
   "version": "1.0.1",
   "description": "",
   "main": "main.js",
@@ -7,8 +7,8 @@
     "icon": "build/logo2.ico",
     "compression": "maximum",
     "asar": true,
-    "appId": "com.avasphere.backoffice",
-    "productName": "Backoffice Kiosk",
+    "appId": "com.avasphere.kiosk",
+    "productName": "Kiosk Avasphere",
     "files": [
       "dist/**/*",
       "main.js",

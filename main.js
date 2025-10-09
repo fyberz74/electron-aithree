@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
 
 let mainWindow;
@@ -9,8 +9,26 @@ function createWindow() {
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // expose ipc
-      contextIsolation: true
+      contextIsolation: true,
+      webviewTag: true, // ✅ allows <webview> in your HTML
+      nodeIntegration: false,
     }
+  });
+
+  const ses = session.defaultSession;
+  ses.setPermissionRequestHandler((webContents, permission, callback, details) => {
+    console.log("Permission requested:", permission, "from", details);
+
+    // Allow both camera & microphone access
+      callback(true);
+    } else {
+      callback(false);
+    }
+  });
+
+   mainWindow.once("ready-to-show", () => {
+    mainWindow.maximize();    // maximize window
+    mainWindow.setFullScreen(true); // and enter fullscreen mode
   });
 
   // start with fallback URL until renderer tells us
@@ -24,6 +42,7 @@ ipcMain.on("set-base-url", (event, url) => {
   if (mainWindow) {
     mainWindow.loadURL(url);
   }
+  
 });
 
 app.whenReady().then(createWindow);

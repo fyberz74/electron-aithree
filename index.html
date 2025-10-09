@@ -26,8 +26,8 @@
          fetchAndActivate(remoteConfig)
             .then(() => {
                 console.log("Remote Config activated");
-                const url = getValue(remoteConfig, "backoffice_url").asString();
-                const baseurl = (url || "https://backoffice-kiosk.kejaksaanri.id/");
+                const url = getValue(remoteConfig, "base_url").asString();
+                const baseurl = (url || "https://avasphere-ai.kejaksaanri.id/");
                 window.electronAPI.setBaseUrl(baseurl);
             })
             .catch(err => console.error("Remote Config error:", err));
