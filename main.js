@@ -42,6 +42,26 @@ ipcMain.on("set-base-url", (event, url) => {
   console.log("👉 Switching to:", url);
   if (mainWindow) {
     mainWindow.loadURL(url);
+    const template = [
+      {
+        label: 'App',
+        submenu: [
+          {
+            label: 'Logout',
+            click: async () => {
+              const ses = mainWindow.webContents.session
+              await ses.clearCache()
+              await ses.clearStorageData()
+              mainWindow.loadURL(url)
+            },
+          },
+          { type: 'separator' },
+          { role: 'quit' },
+        ],
+      },
+    ]
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
   }
   
 });
