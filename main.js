@@ -14,6 +14,46 @@ function createWindow() {
       nodeIntegration: false,
     }
   });
+  const template = [
+    {
+      label: "App",
+      submenu: [
+        {
+          label: "Logout",
+          click: async () => {
+            const ses = mainWindow.webContents.session
+            await ses.clearCache()
+            await ses.clearStorageData()
+            mainWindow.loadURL(url)
+          },
+        },
+        { type: "separator" },
+        { role: "quit", label: "Quit" },
+      ],
+    },
+
+    {
+      label: "View",
+      submenu: [
+        { role: "reload", label: "Reload" },
+        { role: "forceReload", label: "Force Reload" },
+        { type: "separator" },
+        { role: "toggleDevTools", label: "Toggle Developer Tools" },
+        { type: "separator" },
+        { role: "togglefullscreen", label: "Toggle Fullscreen" },
+      ],
+    },
+
+    {
+      label: "Window",
+      submenu: [
+        { role: "minimize", label: "Minimize" },
+        { role: "close", label: "Close Window" },
+      ],
+    },
+  ];
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   const ses = session.defaultSession;
   ses.setPermissionRequestHandler((webContents, permission, callback, details) => {
@@ -42,26 +82,6 @@ ipcMain.on("set-base-url", (event, url) => {
   console.log("👉 Switching to:", url);
   if (mainWindow) {
     mainWindow.loadURL(url);
-    const template = [
-      {
-        label: 'App',
-        submenu: [
-          {
-            label: 'Logout',
-            click: async () => {
-              const ses = mainWindow.webContents.session
-              await ses.clearCache()
-              await ses.clearStorageData()
-              mainWindow.loadURL(url)
-            },
-          },
-          { type: 'separator' },
-          { role: 'quit' },
-        ],
-      },
-    ]
-    const menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
   }
   
 });
